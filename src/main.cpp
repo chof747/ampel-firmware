@@ -1,9 +1,9 @@
 #include <Arduino.h>
 
-#define RED    0
-#define YELLOW 1
-#define GREEN  2
-#define MODE   9
+#define RED1    0
+#define YELLOW  1
+#define GREEN   2
+#define MODE    9
 
 
 #define TIME_CONSTANT 500
@@ -17,9 +17,10 @@
 struct trafficLightState 
 {
   uint16_t duration;
-  uint16_t red;
-  uint16_t yellow;
-  uint16_t green;
+  bool variable;
+  uint16_t red1;
+  uint16_t yellow1;
+  uint16_t green1;
 };
 
 trafficLightState TRAFFIC_LIGHT_MODES[] = {
@@ -30,29 +31,29 @@ trafficLightState TRAFFIC_LIGHT_MODES[] = {
 
   //GRÜN
 
-   { .duration = 20, .red = LOW, .yellow = LOW, .green = HIGH},
+   { .duration = 20, .variable = true, .red1 = LOW, .yellow1 = LOW, .green1 = HIGH},
 
   //GRÜN Blinken
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = LOW},
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = HIGH},
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = LOW},
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = HIGH},
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = LOW},
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = HIGH},
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = LOW},
-   { .duration = 1,  .red = LOW, .yellow = LOW, .green = HIGH},
+   { .duration = 1, .variable = false, .red1 = LOW, .yellow1 = LOW, .green1 = LOW},
+   { .duration = 1, .variable = false,  .red1 = LOW, .yellow1 = LOW, .green1 = HIGH},
+   { .duration = 1, .variable = false,  .red1 = LOW, .yellow1 = LOW, .green1 = LOW},
+   { .duration = 1, .variable = false,  .red1 = LOW, .yellow1 = LOW, .green1 = HIGH},
+   { .duration = 1, .variable = false,  .red1 = LOW, .yellow1 = LOW, .green1 = LOW},
+   { .duration = 1, .variable = false, .red1 = LOW, .yellow1 = LOW, .green1 = HIGH},
+   { .duration = 1, .variable = false,  .red1 = LOW, .yellow1 = LOW, .green1 = LOW},
+   { .duration = 1, .variable = false,  .red1 = LOW, .yellow1 = LOW, .green1 = HIGH},
 
   //GELB
 
-   { .duration = 8, .red = LOW, .yellow = HIGH, .green = LOW},
+   { .duration = 8,  .variable = false, .red1 = LOW, .yellow1 = HIGH, .green1 = LOW},
 
   //ROT
 
-   { .duration = 20, .red = HIGH, .yellow = LOW, .green = LOW},
+   { .duration = 20,  .variable = true, .red1 = HIGH, .yellow1 = LOW, .green1 = LOW},
 
   //GELB-ROT
 
-   { .duration = 4, .red = HIGH, .yellow = HIGH, .green = LOW},
+   { .duration = 4, .variable = false, .red1 = HIGH, .yellow1 = HIGH, .green1 = LOW},
 
 
   
@@ -60,8 +61,8 @@ trafficLightState TRAFFIC_LIGHT_MODES[] = {
    * Gelb Blinken Modus
    * ***************** */
 
-  { .duration = 1,  .red = LOW, .yellow = HIGH, .green = LOW},
-  { .duration = 1,  .red = LOW, .yellow = LOW, .green = LOW}
+  { .duration = 1,  .variable = false, .red1 = LOW, .yellow1 = HIGH, .green1 = LOW},
+  { .duration = 1,  .variable = false, .red1 = LOW, .yellow1 = LOW, .green1 = LOW}
 
 };
 
@@ -77,10 +78,10 @@ uint8_t modeButtonState = HIGH;
 void initializeLights()
 {
  //Setzen der LEDs für das rote, gelbe und Grüne Ampellicht
-  pinMode(RED, OUTPUT);
+  pinMode(RED1, OUTPUT);
   pinMode(YELLOW, OUTPUT);
   pinMode(GREEN, OUTPUT);
-  digitalWrite(RED, LOW);
+  digitalWrite(RED1, LOW);
   digitalWrite(YELLOW, LOW);
   digitalWrite(GREEN, LOW);
 }
@@ -129,17 +130,17 @@ void loop()
 
     lastEvent = current;
 
-    digitalWrite(RED, TRAFFIC_LIGHT_MODES[lightState].red);
-    digitalWrite(YELLOW, TRAFFIC_LIGHT_MODES[lightState].yellow);
-    digitalWrite(GREEN, TRAFFIC_LIGHT_MODES[lightState].green);
+    digitalWrite(RED1, TRAFFIC_LIGHT_MODES[lightState].red1);
+    digitalWrite(YELLOW, TRAFFIC_LIGHT_MODES[lightState].yellow1);
+    digitalWrite(GREEN, TRAFFIC_LIGHT_MODES[lightState].green1);
   }
 
   
   int button = digitalRead(MODE);
   if ((LOW == button) && (HIGH == modeButtonState))
   {
-    //digitalWrite(RED,HIGH); delay(1000);
-    //digitalWrite(RED,LOW); delay(250);
+    //digitalWrite(RED1,HIGH); delay(1000);
+    //digitalWrite(RED1,LOW); delay(250);
     switchMode(mode +1);
     
   }
