@@ -1,9 +1,14 @@
 #include <Arduino.h>
 
-#define RED1    0
-#define YELLOW  1
-#define GREEN   2
-#define MODE    9
+#define RED1     7
+#define YELLOW1  6
+#define GREEN1   5
+#define RED2     4
+#define YELLOW2  3
+#define GREEN2   2
+#define MODE     10
+#define TIMER1   9
+#define TIMER2   8
 
 
 #define TIME_CONSTANT 500
@@ -79,22 +84,15 @@ void initializeLights()
 {
  //Setzen der LEDs für das rote, gelbe und Grüne Ampellicht
   pinMode(RED1, OUTPUT);
-  pinMode(YELLOW, OUTPUT);
-  pinMode(GREEN, OUTPUT);
+  pinMode(YELLOW1, OUTPUT);
+  pinMode(GREEN1, OUTPUT);
   digitalWrite(RED1, LOW);
-  digitalWrite(YELLOW, LOW);
-  digitalWrite(GREEN, LOW);
+  digitalWrite(YELLOW1, LOW);
+  digitalWrite(GREEN1, LOW);
 }
 
 void switchMode(int newmode)
 {
-  /*
-  digitalWrite(GREEN,HIGH); delay(250);
-  digitalWrite(GREEN,LOW); delay(250);
-  digitalWrite(GREEN,HIGH); delay(250);
-  digitalWrite(GREEN,LOW); delay(250);
-  */
-
   mode = (newmode >= MAX_MODES) ? 0 : newmode;
 
   //letzten Zeitstempel initialisieren
@@ -131,23 +129,19 @@ void loop()
     lastEvent = current;
 
     digitalWrite(RED1, TRAFFIC_LIGHT_MODES[lightState].red1);
-    digitalWrite(YELLOW, TRAFFIC_LIGHT_MODES[lightState].yellow1);
-    digitalWrite(GREEN, TRAFFIC_LIGHT_MODES[lightState].green1);
+    digitalWrite(YELLOW1, TRAFFIC_LIGHT_MODES[lightState].yellow1);
+    digitalWrite(GREEN1, TRAFFIC_LIGHT_MODES[lightState].green1);
   }
 
   
   int button = digitalRead(MODE);
   if ((LOW == button) && (HIGH == modeButtonState))
   {
-    //digitalWrite(RED1,HIGH); delay(1000);
-    //digitalWrite(RED1,LOW); delay(250);
     switchMode(mode +1);
     
   }
   else if (LOW == button)
   {
-    //digitalWrite(YELLOW,HIGH); delay(250);
-    //digitalWrite(YELLOW,LOW); delay(250);
   }
   
   modeButtonState = button;
