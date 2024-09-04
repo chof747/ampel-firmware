@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "config.h"
 
 #define RED1 7
 #define YELLOW1 6
