@@ -78,7 +78,6 @@ trafficLightState TRAFFIC_LIGHT_MODES[] = {
     //ROT 2
     {2, 0, HIGH, LOW, LOW, HIGH, LOW, LOW},
     //GELB-ROT 1
-
     {4, 0, HIGH, HIGH, LOW, HIGH, LOW, LOW},
     /*
    * Gelb Blinken Modus
@@ -123,6 +122,10 @@ void switchMode(int newmode)
   mode = (newmode >= MAX_MODES) ? 0 : newmode;
 
   //letzten Zeitstempel initialisieren
+  #ifdef DEBUG
+    softserial.print("[TL] Mode ");
+    softserial.println(newmode);
+  #endif
   lastEvent = 0;
   lightState = LIGHT_STATE_RANGE[mode][MODE_END] - 1;
 
@@ -153,7 +156,7 @@ void setup()
 
 #ifdef DEBUG
   softserial.begin(9600);
-  softserial.println("[TRAFFIC LIGHT] Starting");
+  softserial.println("[TL] Starting");
 #endif
 
   switchMode(1);
