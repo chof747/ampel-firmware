@@ -8,8 +8,7 @@
 #define YELLOW2 3
 #define GREEN2 2
 #define MODE 10
-#define TIMER1 A1
-#define TIMER2 A2
+
 
 #define DEBUG_PIN 1
 
