@@ -12,10 +12,6 @@
 
 #define DEBUG_PIN 1
 
-#define TIME_CONSTANT 500
-#define MAX_VARIABLE_TIME 110
-#define LOOP_DELAY TIME_CONSTANT / 25
-
 #define MODE_NORMAL 0
 #define MODE_BLINKING 1
 #define MODE_START 0
